@@ -14,10 +14,12 @@ defmodule NewWorldSimulationWeb.SimulationChannel do
   end
 
   def handle_info(%{type: "simulation_tick_update"} = info, socket) do
-    info = Map.update!(info, :payload, fn grid_data ->
-      for {k, v} <- grid_data, into: %{}, do: {Kernel.inspect(k), v}
-    end)
-    |> IO.inspect()
+    info =
+      Map.update!(info, :payload, fn grid_data ->
+        for {k, v} <- grid_data, into: %{}, do: {Kernel.inspect(k), v}
+      end)
+      |> IO.inspect()
+
     push(socket, "simulation_tick_update", info)
 
     {:noreply, socket}
